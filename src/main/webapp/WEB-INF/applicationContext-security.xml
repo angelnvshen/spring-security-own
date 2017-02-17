@@ -21,9 +21,9 @@
 				<security:user authorities="ROLE_SCARVAREZ_MEMBER" name="andr" password="scarvarez" />
 			</security:user-service>-->
 			<security:jdbc-user-service data-source-ref="dataSource"
-										group-authorities-by-username-query="select g.id, g.group_name, ga.authority
-											from groups g, group_members gm, group_authorities ga
-											where gm.username = ? and g.id = ga.group_id and g.id = gm.group_id" />
+										users-by-username-query="select name,key,1 from people where name = ?"
+										authorities-by-username-query="select name, role from roles where name = ?"
+			/>
 		</security:authentication-provider>
 	</security:authentication-manager>
 
