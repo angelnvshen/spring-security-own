@@ -10,6 +10,9 @@
 
 	<security:http auto-config="true">
 		<security:intercept-url pattern="/hello" access="ROLE_ADMIN" />
+		<!--<security:intercept-url pattern="/movies" access="ROLE_ADMIN" />-->
+
+		<security:http-basic />
 	</security:http>
 
 	<security:authentication-manager>
