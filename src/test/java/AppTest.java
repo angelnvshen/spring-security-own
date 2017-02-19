@@ -1,3 +1,6 @@
+import com.apress.pss.common.util.HeaderUtil;
+import com.apress.pss.security.transfer.JwtUserDto;
+import com.apress.pss.security.util.JwtTokenValidator;
 import org.junit.Test;
 import org.springframework.http.*;
 import org.springframework.security.crypto.codec.Base64;
@@ -14,8 +17,16 @@ public class AppTest {
 
     @Test
     public void testBasicAuthentication() {
+        HttpHeaders headers = new HttpHeaders();
+        JwtUserDto user = new JwtUserDto();
+        user.setId(11L);
+        user.setRole("admin");
+        user.setUsername("car");
+        String token = JwtTokenValidator.generateToken(user);
+        headers.add("Authorization", "Basic " + token);
+
         RestTemplate template = new RestTemplate();
-        HttpEntity<String> request = new HttpEntity<String>(getHeaders("car:scarvarez"));
+        HttpEntity<String> request = new HttpEntity<String>(headers);
 //        ResponseEntity<Object> result = template.exchange(url+"hello", HttpMethod.GET, request, Object.class);
 //        System.out.println(result);
 
@@ -26,22 +37,5 @@ public class AppTest {
         System.out.println(result3);
     }
 
-    /*
-     * Add HTTP Authorization header, using Basic-Authentication to send user-credentials.
-     */
-    private static HttpHeaders getHeaders(String usernameAndPassword) {
 
-        String base64Credentials = encodeByBase64(usernameAndPassword);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Basic " + base64Credentials);
-        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-        return headers;
-    }
-
-    private static String encodeByBase64(String str){
-        String plainCredentials = str;
-        String base64Credentials = new String(Base64.encode(plainCredentials.getBytes()));
-        return base64Credentials;
-    }
 }
